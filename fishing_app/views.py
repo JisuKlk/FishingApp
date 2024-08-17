@@ -5,6 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.http import HttpResponseRedirect
 
+
 def custom_login(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
