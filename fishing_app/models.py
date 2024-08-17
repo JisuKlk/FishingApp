@@ -27,6 +27,7 @@ from django.db import models
 #endregion
 
 # Class for different species of fish 🐟
+
 class Species(models.Model):
     name = models.CharField(max_length=100, unique=True)
     scientific_name = models.CharField(max_length=150, blank=True, null=True)
@@ -36,6 +37,7 @@ class Species(models.Model):
         return self.name
 
 # Class for captured fish with detailed data 🎣
+
 class Capture(models.Model):
     # Right here we're using a FK so the user chooses the specie from the database
     # This way the user could later on filter captured fish by species without misspelling anything 🐟👍
