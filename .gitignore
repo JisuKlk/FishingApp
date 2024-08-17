@@ -1,4 +1,7 @@
+# Ignore virtual environment and environment files
 myenv
 .env
-fishing_app/__pycache__
+
+# Ignore Python bytecode files and cache
+__pycache__/
 *.pyc
