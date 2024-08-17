@@ -83,12 +83,12 @@ WSGI_APPLICATION = 'fishing_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '' ,  # o la dirección IP de tu servidor de base de datos
-        'PORT': '3306',  # El puerto por defecto de MySQL
+        'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.sqlite3'),  # Fallback to SQLite if not set
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
