@@ -1,3 +1,4 @@
 myenv
 .env
-fishing_app\__pycache__
+fishing_app/__pycache__
+*.pyc
