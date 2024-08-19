@@ -12,8 +12,8 @@ def fetch_all_species_from_worms():
 
         for specie in species_data:
             id_worms = specie.get('AphiaID')
-            name = specie.get('vernacular', 'Desconocido')
-            scientific_name = specie.get('scientificname', 'Desconocido')
+            name = specie.get('vernacular', 'Unknown')
+            scientific_name = specie.get('scientificname', 'Unknown')
             authority = specie.get('authority', '')
             habitat = specie.get('habitat', '')
 
