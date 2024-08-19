@@ -30,8 +30,7 @@ from django.contrib.auth.models import User
 # Class for different species of fish 🐟
 class Species(models.Model):
     # This id is extracted from the WoRMS database
-    id_worms = models.IntegerField(unique=True)
-    name = models.CharField(max_length=100, unique=False)
+    id_worms = models.IntegerField(unique=True, default=1)
     scientific_name = models.CharField(max_length=150, blank=True, null=True)
     authority = models.CharField(max_length=100, blank=True)
     habitat = models.CharField(max_length=100, blank=True)

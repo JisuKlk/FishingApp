@@ -12,7 +12,6 @@ def fetch_all_species_from_worms():
 
         for specie in species_data:
             id_worms = specie.get('AphiaID')
-            name = specie.get('vernacular', 'Unknown')
             scientific_name = specie.get('scientificname', 'Unknown')
             authority = specie.get('authority', '')
             habitat = specie.get('habitat', '')
@@ -21,7 +20,6 @@ def fetch_all_species_from_worms():
             if not Species.objects.filter(id_worms=id_worms).exists():
                 Species.objects.create(
                     id_worms=id_worms,
-                    name=name,
                     scientific_name=scientific_name,
                     authority=authority,
                     habitat=habitat
