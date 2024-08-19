@@ -40,10 +40,9 @@ class Species(models.Model):
 
 # fishing_app/models.py
 
-
 class Capture(models.Model):
     species = models.CharField(max_length=100)  # Si no es un ForeignKey
-    # Si species es un ForeignKey a otro modelo, deberías definirlo así:
+    # Si species es un ForeignKey a otro modelo, deberías definirlo así:        (Lo dejamos pa cuando tengamos una api mejor implementada)
     # species = models.ForeignKey(Species, on_delete=models.CASCADE)
     size = models.FloatField()
     weight = models.FloatField()
