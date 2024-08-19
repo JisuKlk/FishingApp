@@ -30,12 +30,15 @@ from datetime import datetime
 
 # Class for different species of fish 🐟
 class Species(models.Model):
+    # This id is extracted from the WoRMS database
+    id_worms = models.IntegerField(unique=True)
     name = models.CharField(max_length=100, unique=True)
     scientific_name = models.CharField(max_length=150, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    authority = models.CharField(max_length=100, blank=True)
+    habitat = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.name or self.scientific_name
 
 class Capture(models.Model):
     species = models.CharField(max_length=100)
@@ -48,7 +51,3 @@ class Capture(models.Model):
 
     def __str__(self):
         return f'{self.species} ({self.size} cm, {self.weight} kg, {self.date.strftime("%Y-%m-%d %H:%M:%S")})'
-
-
-
-
