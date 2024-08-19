@@ -5,13 +5,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>Home</title>
+    <!-- O puedes usar Bootstrap para el estilo -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
-        <h2>User Profile</h2>
-        <p>Welcome to your profile page!</p>
-    </div>
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Perfil de Usuario</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    </head>
+    <body>
+        <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Profile</title>
+    </head>
+    <body>
+        <h1>Welcome, {{ user.username }}</h1>
+    
+        <h2>Your Captures</h2>
+        {% if captures %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Species</th>
+                        <th>Size</th>
+                        <th>Weight</th>
+                        <th>Bait</th>
+                        <th>Location</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for capture in captures %}
+                    <tr>
+                        <td>{{ capture.species }}</td>
+                        <td>{{ capture.size }}</td>
+                        <td>{{ capture.weight }}</td>
+                        <td>{{ capture.bait }}</td>
+                        <td>{{ capture.location }}</td>
+                        <td>{{ capture.date }}</td>
+                        <td>
+                            <form method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="capture_id" value="{{ capture.id }}">
+                                <button type="submit" name="delete_capture" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No captures found.</p>
+        {% endif %}
+    
+        <h2>Add New Capture</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="create_capture" class="btn btn-primary">Add Capture</button>
+        </form>
+        
+        <a href="{% url 'profile' %}" class="btn btn-primary">Back to Home</a>
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    </body>
+    </html>
+    
+</body>
+</html>
+
+    </body>
+    </html>
+    
 </body>
 </html>

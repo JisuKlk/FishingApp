@@ -41,11 +41,19 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'fishing_app',
+    'crispy_forms',
+    'crispy_bootstrap5',
 
 ]
 
+LOGIN_REDIRECT_URL = '/home/' 
+LOGOUT_REDIRECT_URL = '/login/'
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+'django.contrib.auth.backends.ModelBackend',
 ]
 
 MIDDLEWARE = [
@@ -134,6 +142,3 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# settings.py
-LOGIN_REDIRECT_URL = '/home/'

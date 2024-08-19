@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends "base_generic.html" %}
+
+{% block content %}
+<h2>My Captures</h2><a href="{% url 'capture-create' %}">Add New Capture</a>
+<ul>
+    {% for capture in object_list %}
+    <li>
+        {{ capture.species }} - {{ capture.size }} cm - {{ capture.weight }} kg
+        <a href="{% url 'capture-update' capture.pk %}">Edit</a>
+        <a href="{% url 'capture-delete' capture.pk %}">Delete</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
+
+</body>
+</html>

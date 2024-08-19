@@ -1,5 +1,7 @@
 # We import the django models
 from django.db import models
+from django.contrib.auth.models import User
+from datetime import datetime
 
 # We create a class from django's models, django will treat this as a db table 📰
 # One must define the character type of every value on the table
@@ -35,16 +37,18 @@ class Species(models.Model):
     def __str__(self):
         return self.name
 
-# Class for captured fish with detailed data 🎣
 class Capture(models.Model):
-    # Right here we're using a FK so the user chooses the specie from the database
-    # This way the user could later on filter captured fish by species without misspelling anything 🐟👍
-    species = models.ForeignKey(Species, on_delete=models.CASCADE)
+    species = models.CharField(max_length=100)
     size = models.FloatField()
     weight = models.FloatField()
     bait = models.CharField(max_length=100)
-    location = models.CharField(max_length=255)
-    date = models.DateTimeField(auto_now_add=True)
+    location = models.CharField(max_length=100)
+    date = models.DateField(default=datetime.now)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
-        return f"{self.species.name} captured at {self.location} on {self.date.strftime('%Y-%m-%d')}"
+        return f'{self.species} ({self.size} cm, {self.weight} kg, {self.date.strftime("%Y-%m-%d %H:%M:%S")})'
+
+
+
+
