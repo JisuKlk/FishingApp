@@ -1,7 +1,6 @@
 # We import the django models
 from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime
 
 # We create a class from django's models, django will treat this as a db table 📰
 # One must define the character type of every value on the table
@@ -40,14 +39,23 @@ class Species(models.Model):
     def __str__(self):
         return self.name or self.scientific_name
 
+# fishing_app/models.py
+
+
 class Capture(models.Model):
-    species = models.CharField(max_length=100)
+    species = models.CharField(max_length=100)  # Si no es un ForeignKey
+    # Si species es un ForeignKey a otro modelo, deberías definirlo así:
+    # species = models.ForeignKey(Species, on_delete=models.CASCADE)
     size = models.FloatField()
     weight = models.FloatField()
     bait = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
-    date = models.DateField(default=datetime.now)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
+    date = models.DateField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.species} ({self.size} cm, {self.weight} kg, {self.date.strftime("%Y-%m-%d %H:%M:%S")})'
+        return f"{self.species} - {self.size} cm - {self.weight} kg"
+
+
+
+
