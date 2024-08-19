@@ -14,15 +14,12 @@ class CustomUserCreationForm(UserCreationForm):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
         self.fields['password1'].help_text = None
         self.fields['password2'].help_text = None
-        
+
 
 class CaptureForm(forms.ModelForm):
     class Meta:
         model = Capture
         fields = ['species', 'size', 'weight', 'bait', 'location', 'date']
-        widgets = {
-            'date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),  # Usa datetime-local para selección de fecha y hora
-        }
-   
+
 
 

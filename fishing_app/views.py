@@ -27,6 +27,7 @@ def custom_login(request):
         form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
 
+@login_required
 def profile(request):
     user = request.user
     
@@ -65,7 +66,7 @@ class CaptureListView(ListView):
 class CaptureCreateView(CreateView):
     model = Capture
     template_name = 'capture_form.html'
-    fields = ['species', 'size', 'weight', 'bait', 'location']
+    fields = ['species', 'size', 'weight', 'bait', 'location', 'date']
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -74,7 +75,7 @@ class CaptureCreateView(CreateView):
 class CaptureUpdateView(UpdateView):
     model = Capture
     template_name = 'capture_form.html'
-    fields = ['species', 'size', 'weight', 'bait', 'location']
+    fields = ['species', 'size', 'weight', 'bait', 'location', 'date']
 
 class CaptureDeleteView(DeleteView):
     model = Capture

@@ -1,45 +1,19 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <!-- O puedes usar Bootstrap para el estilo -->
+    <title>Profile</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Perfil de Usuario</title>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    </head>
-    <body>
-        <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de Usuario</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
-<body>
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Profile</title>
-    </head>
-    <body>
+    <div class="container">
         <h1>Welcome, {{ user.username }}</h1>
-    
+
         <h2>Your Captures</h2>
         {% if captures %}
-            <table>
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>Species</th>
@@ -74,27 +48,19 @@
         {% else %}
             <p>No captures found.</p>
         {% endif %}
-    
+
         <h2>Add New Capture</h2>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" name="create_capture" class="btn btn-primary">Add Capture</button>
         </form>
-        
+
         <a href="{% url 'profile' %}" class="btn btn-primary">Back to Home</a>
         <form method="post" action="{% url 'logout' %}" style="display:inline;">
             {% csrf_token %}
             <button type="submit" class="btn btn-danger">Logout</button>
         </form>
-    </body>
-    </html>
-    
-</body>
-</html>
-
-    </body>
-    </html>
-    
+    </div>
 </body>
 </html>

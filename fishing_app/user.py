@@ -5,5 +5,5 @@ from .models import Capture
 class CaptureForm(forms.ModelForm):
     class Meta:
         model = Capture
-        fields = ['species', 'size', 'weight', 'bait', 'location']
+        fields = ['species', 'size', 'weight', 'bait', 'location', 'date']
         # No incluimos 'date' porque es un campo no editable
