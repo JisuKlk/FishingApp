@@ -36,21 +36,21 @@ class Species(models.Model):
     habitat = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
-        return self.name or self.scientific_name
+        return self.scientific_name
 
 # fishing_app/models.py
 
 
 class Capture(models.Model):
-    species = models.CharField(max_length=100)  # Si no es un ForeignKey
+    #species = models.CharField(max_length=100)  # Si no es un ForeignKey
     # Si species es un ForeignKey a otro modelo, deberías definirlo así:
-    # species = models.ForeignKey(Species, on_delete=models.CASCADE)
+    species = models.ForeignKey(Species, on_delete=models.CASCADE, default=1)
     size = models.FloatField()
     weight = models.FloatField()
     bait = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     date = models.DateField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return f"{self.species} - {self.size} cm - {self.weight} kg"
