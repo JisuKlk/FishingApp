@@ -1,9 +1,7 @@
-# FISHING APP
-
-FishingApp is an app designed for fishermen who want to keep a detailed record of their catches. With this tool, you can document every fish you catch, including details such as species, weight, length, location and date of capture.
-
 ![Logo](https://github.com/JisuKlk/FishingApp/blob/main/fishing_app/backend/public/src/logo_fishingapp.png)
 
+
+FishingApp is an app designed for fishermen who want to keep a detailed record of their catches. With this tool, you can document every fish you catch, including details such as species, weight, length, location and date of capture.
 
 ## FAQ
 
