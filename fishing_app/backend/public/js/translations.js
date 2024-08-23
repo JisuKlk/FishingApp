@@ -26,7 +26,11 @@ const translations = {
         registrationSuccess: "You have successfully registered",
         forgotPassword: "Forgot password?",
         noAccount: "Don't have an account?",
-        signUp: "Sign up"
+        signUp: "Sign up",
+        fishNamePlaceholder: "Enter fish name",
+        sizePlaceholder: "Enter size (cm)",
+        weightPlaceholder: "Enter weight (kg)",
+        placePlaceholder: "Enter place"
     },
     es: {
         login: "Iniciar Sesión",
@@ -55,7 +59,11 @@ const translations = {
         registrationSuccess: "Te has registrado correctamente",
         forgotPassword: "¿Olvidó su contraseña?",
         noAccount: "¿No tiene una cuenta?",
-        signUp: "Registrarse"
+        signUp: "Registrarse",
+        fishNamePlaceholder: "Ingrese el nombre del pez",
+        sizePlaceholder: "Ingrese el tamaño (cm)",
+        weightPlaceholder: "Ingrese el peso (kg)",
+        placePlaceholder: "Ingrese el lugar"
     }
 };
 

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" type="image/png" href="src/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - Fishing App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes wave {
+            0% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-5px) scaleY(1.05); }
+            100% { transform: translateY(0) scaleY(1); }
+        }
+    </style>
+</head>
+<body class="bg-blue-50">
+    <!-- Menú desplegable -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-hidden">
+        <div class="absolute inset-x-0 bottom-0 h-16 bg-blue-200 animate-[wave_3s_ease-in-out_infinite]"></div>
+        <div class="absolute inset-x-0 bottom-0 h-12 bg-blue-300 animate-[wave_2.5s_ease-in-out_infinite_0.1s]"></div>
+        <div class="absolute inset-x-0 bottom-0 h-8 bg-blue-400 animate-[wave_2s_ease-in-out_infinite_0.2s]"></div>
+        <div class="p-5 relative z-10">
+            <button id="close-sidebar" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="flex justify-center mb-6">
+                <img src="src/logo_fishingapp.png" alt="Fishing App Logo" class="h-20 w-30">
+            </div>
+            <ul class="space-y-4">
+                <li>
+                    <a href="home.html" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-home mr-3"></i>
+                        Inicio
+                    </a>
+                </li>
+                <li>
+                    <a href="catalog.html" class="flex items-center text-purple-600 font-semibold">
+                        <i class="fas fa-fish mr-3"></i>
+                        Catálogo
+                    </a>
+                </li>
+                <li>
+                    <a href="account.html" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-user mr-3"></i>
+                        Cuenta
+                    </a>
+                </li>
+                <li>
+                    <a href="feedback.html" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-comment mr-3"></i>
+                        Feedback
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-cog mr-3"></i>
+                        Opciones
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-sign-out-alt mr-3"></i>
+                        Cerrar sesión
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="min-h-screen flex flex-col">
+        <nav class="bg-white shadow-md">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <!-- Botón para abrir el menú -->
+                <button id="open-sidebar" class="text-gray-600 hover:text-gray-800 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <div class="absolute left-1/2 transform -translate-x-1/2">
+                    <img src="src/fishingapp.png" alt="Fishing App Logo" class="h-20 w-20">
+                </div>
+                <div class="relative">
+                    <button id="filter-button" class="px-3 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-300 focus:outline-none">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <div id="filter-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg overflow-hidden z-20 backdrop-filter backdrop-blur-sm bg-opacity-90">
+                        <div class="p-2">
+                            <select id="filter-season" class="w-full mb-2 px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                                <option value="">Origen</option>
+                                <option value="spring">Primavera</option>
+                                <option value="summer">Verano</option>
+                                <option value="autumn">Otoño</option>
+                                <option value="winter">Invierno</option>
+                            </select>
+                            <select id="filter-rarity" class="w-full px-2 py-1 bg-green-100 text-green-800 rounded">
+                                <option value="">Rareza</option>
+                                <option value="common">Común</option>
+                                <option value="uncommon">Poco común</option>
+                                <option value="rare">Raro</option>
+                                <option value="very-rare">Muy raro</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container mx-auto px-4 pt-24 pb-12">
+            <h1 class="text-3xl font-bold text-center mb-4">Catálogo</h1>
+            <div class="flex justify-center mb-8">
+                <a href="capture.html" class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300 focus:outline-none">
+                    <i class="fas fa-eye mr-2"></i>
+                    Capturar manualmente
+                </a>
+            </div>
+            <div id="fish-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                <!-- Los peces se cargarán aquí dinámicamente -->
+            </div>
+        </main>
+
+        <!-- Modal para detalles del pez -->
+        <div id="fish-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white p-8 rounded-xl max-w-lg w-full">
+                <h2 id="modal-title" class="text-2xl font-bold mb-4"></h2>
+                <p id="modal-details" class="mb-4"></p>
+                <button id="close-modal" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const fishData = [
+            { id: 1, name: 'Trucha común', icon: 'fa-fish', family: 'Salmónidos', season: ['spring', 'summer', 'autumn'], rarity: 'common', price: 500 },
+            { id: 2, name: 'Carpa común', icon: 'fa-fish', family: 'Ciprínidos', season: ['spring', 'summer', 'autumn'], rarity: 'common', price: 300 },
+            { id: 3, name: 'Lucio europeo', icon: 'fa-fish', family: 'Esócidos', season: ['autumn', 'winter'], rarity: 'uncommon', price: 800 },
+            { id: 4, name: 'Perca europea', icon: 'fa-fish', family: 'Pércidos', season: ['spring', 'summer'], rarity: 'common', price: 400 },
+            { id: 5, name: 'Salmón atlántico', icon: 'fa-fish', family: 'Salmónidos', season: ['spring', 'autumn'], rarity: 'rare', price: 1500 },
+            { id: 6, name: 'Anguila europea', icon: 'fa-fish', family: 'Anguílidos', season: ['spring', 'summer'], rarity: 'uncommon', price: 1000 },
+            { id: 7, name: 'Tenca', icon: 'fa-fish', family: 'Ciprínidos', season: ['summer', 'autumn'], rarity: 'common', price: 250 },
+            { id: 8, name: 'Barbo común', icon: 'fa-fish', family: 'Ciprínidos', season: ['spring', 'summer'], rarity: 'common', price: 350 },
+            { id: 9, name: 'Siluro europeo', icon: 'fa-fish', family: 'Silúridos', season: ['summer', 'autumn'], rarity: 'rare', price: 1200 },
+            { id: 10, name: 'Esturión europeo', icon: 'fa-fish', family: 'Acipenséridos', season: ['spring'], rarity: 'very-rare', price: 5000 },
+            { id: 11, name: 'Lubina europea', icon: 'fa-fish', family: 'Morónidos', season: ['summer', 'autumn'], rarity: 'uncommon', price: 900 },
+            { id: 12, name: 'Dorada', icon: 'fa-fish', family: 'Espáridos', season: ['summer', 'autumn'], rarity: 'uncommon', price: 850 },
+            { id: 13, name: 'Rodaballo', icon: 'fa-fish', family: 'Escoftálmidos', season: ['spring', 'summer'], rarity: 'rare', price: 1800 },
+            { id: 14, name: 'Lenguado europeo', icon: 'fa-fish', family: 'Soleidos', season: ['spring', 'autumn'], rarity: 'rare', price: 1600 },
+            { id: 15, name: 'Bacalao del Atlántico', icon: 'fa-fish', family: 'Gádidos', season: ['winter'], rarity: 'uncommon', price: 700 }
+        ];
+
+        const fishGrid = document.getElementById('fish-grid');
+        const filterSeason = document.getElementById('filter-season');
+        const filterRarity = document.getElementById('filter-rarity');
+        const modal = document.getElementById('fish-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDetails = document.getElementById('modal-details');
+        const closeModal = document.getElementById('close-modal');
+
+        function createFishCard(fish) {
+            const card = document.createElement('div');
+            card.className = 'bg-white rounded-xl shadow-lg p-4 hover:shadow-xl transition duration-300 transform hover:-translate-y-1 cursor-pointer';
+            card.innerHTML = `
+                <div class="relative w-full h-32 bg-blue-100 rounded-lg overflow-hidden">
+                    <i class="fas ${fish.icon} text-5xl text-blue-500 absolute inset-0 flex items-center justify-center animate-[float_3s_ease-in-out_infinite]"></i>
+                </div>
+                <h3 class="mt-3 text-center font-semibold text-gray-700">${fish.name}</h3>
+                <p class="text-center text-sm text-gray-500">Familia: ${fish.family}</p>
+                <p class="text-center text-sm text-gray-500">Precio: ${fish.price} $</p>
+                <p class="text-center text-sm text-gray-500">Rareza: ${fish.rarity}</p>
+                <button class="mt-2 w-full px-3 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300 focus:outline-none capture-button">
+                    <i class="fas fa-fishing-rod mr-2"></i>Capturar
+                </button>
+            `;
+            card.querySelector('.capture-button').addEventListener('click', (e) => {
+                e.stopPropagation();
+                captureFish(fish);
+            });
+            card.addEventListener('click', () => showFishDetails(fish));
+            return card;
+        }
+
+        function showFishDetails(fish) {
+            modalTitle.textContent = fish.name;
+            modalDetails.innerHTML = `
+                <p><strong>Familia:</strong> ${fish.family}</p>
+                <p><strong>Precio:</strong> ${fish.price} $</p>
+                <p><strong>Rareza:</strong> ${fish.rarity}</p>
+                <p><strong>Temporadas:</strong> ${fish.season.join(', ')}</p>
+            `;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        });
+
+        function filterFish() {
+            const selectedSeason = filterSeason.value;
+            const selectedRarity = filterRarity.value;
+            
+            const filteredFish = fishData.filter(fish => 
+                (selectedSeason === '' || fish.season.includes(selectedSeason)) &&
+                (selectedRarity === '' || fish.rarity === selectedRarity)
+            );
+            
+            fishGrid.innerHTML = '';
+            filteredFish.forEach(fish => {
+                fishGrid.appendChild(createFishCard(fish));
+            });
+        }
+
+        filterSeason.addEventListener('change', filterFish);
+        filterRarity.addEventListener('change', filterFish);
+
+        // Implementación básica de carga perezosa
+        let currentIndex = 0;
+        const BATCH_SIZE = 10;
+
+        function loadMoreFish() {
+            const fragment = document.createDocumentFragment();
+            const end = Math.min(currentIndex + BATCH_SIZE, fishData.length);
+            
+            for (let i = currentIndex; i < end; i++) {
+                fragment.appendChild(createFishCard(fishData[i]));
+            }
+            
+            fishGrid.appendChild(fragment);
+            currentIndex = end;
+
+            if (currentIndex >= fishData.length) {
+                window.removeEventListener('scroll', checkScroll);
+            }
+        }
+
+        function checkScroll() {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                loadMoreFish();
+            }
+        }
+
+        window.addEventListener('scroll', checkScroll);
+
+        // Carga inicial
+        loadMoreFish();
+
+        const filterButton = document.getElementById('filter-button');
+        const filterMenu = document.getElementById('filter-menu');
+
+        filterButton.addEventListener('click', () => {
+            filterMenu.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!filterButton.contains(event.target) && !filterMenu.contains(event.target)) {
+                filterMenu.classList.add('hidden');
+            }
+        });
+
+        // Funcionalidad del menú desplegable
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarButton = document.getElementById('open-sidebar');
+        const closeSidebarButton = document.getElementById('close-sidebar');
+
+        openSidebarButton.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+        });
+
+        closeSidebarButton.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+        });
+
+        // Cerrar el menú al hacer clic fuera de él
+        document.addEventListener('click', (event) => {
+            if (!sidebar.contains(event.target) && !openSidebarButton.contains(event.target)) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+
+        function captureFish(fish) {
+            alert(`¡Has capturado un ${fish.name}!`);
+            // Aquí puedes añadir la lógica para guardar la captura en el inventario del usuario
+        }
+
+        function showCaptureModal() {
+            const captureModal = document.createElement('div');
+            captureModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            captureModal.innerHTML = `
+                <div class="bg-white p-8 rounded-xl max-w-lg w-full">
+                    <h2 class="text-2xl font-bold mb-4">Capturar un pez</h2>
+                    <p class="mb-4">Selecciona un pez del catálogo para capturarlo.</p>
+                    <button id="close-capture-modal" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Cerrar</button>
+                </div>
+            `;
+            document.body.appendChild(captureModal);
+
+            document.getElementById('close-capture-modal').addEventListener('click', () => {
+                document.body.removeChild(captureModal);
+            });
+        }
+
+        document.getElementById('capture-manually').addEventListener('click', () => {
+            showCaptureModal();
+        });
+    </script>
+</body>
+</html>
