@@ -29,11 +29,12 @@ from django.contrib.auth.models import User
 
 # Class for different species of fish 🐟
 class Species(models.Model):
-    # This id is extracted from the WoRMS database
-    id_worms = models.IntegerField(unique=True, default=1)
+    # This id is extracted from the fishbaseapi database
+    id_fishbase = models.IntegerField(unique=True, default=1)
     scientific_name = models.CharField(max_length=150, blank=True, null=True)
     authority = models.CharField(max_length=100, blank=True)
     habitat = models.CharField(max_length=100, blank=True)
+    common_name = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.scientific_name

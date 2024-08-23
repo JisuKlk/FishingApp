@@ -5,3 +5,4 @@ myenv
 # Ignore Python bytecode files and cache
 __pycache__/
 *.pyc
+/fishing_app/migrations
