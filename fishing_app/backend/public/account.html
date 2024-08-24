@@ -19,10 +19,16 @@
             100% { transform: translateY(0) scaleY(1); }
         }
     </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            // ... otras configuraciones
+        }
+    </script>
 </head>
-<body class="bg-blue-50">
+<body class="bg-blue-50 dark:bg-gray-900">
     <!-- Menú desplegable -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-hidden">
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-hidden">
         <div class="absolute inset-x-0 bottom-0 h-16 bg-blue-200 animate-[wave_3s_ease-in-out_infinite]"></div>
         <div class="absolute inset-x-0 bottom-0 h-12 bg-blue-300 animate-[wave_2.5s_ease-in-out_infinite_0.1s]"></div>
         <div class="absolute inset-x-0 bottom-0 h-8 bg-blue-400 animate-[wave_2s_ease-in-out_infinite_0.2s]"></div>
@@ -35,47 +41,53 @@
             </div>
             <ul class="space-y-4">
                 <li>
-                    <a href="home.html" class="flex items-center text-gray-700 hover:text-blue-500">
+                    <a href="home.html" class="flex items-center text-gray-700 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
                         <i class="fas fa-home mr-3"></i>
                         Inicio
                     </a>
                 </li>
                 <li>
-                    <a href="catalog.html" class="flex items-center text-gray-700 hover:text-blue-500">
+                    <a href="catalog.html" class="flex items-center text-gray-700 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
                         <i class="fas fa-fish mr-3"></i>
                         Catálogo
                     </a>
                 </li>
                 <li>
-                    <a href="account.html" class="flex items-center text-purple-600 font-semibold">
+                    <a href="account.html" class="flex items-center text-purple-600 font-semibold dark:text-purple-400">
                         <i class="fas fa-user mr-3"></i>
                         Cuenta
                     </a>
                 </li>
                 <li>
-                    <a href="feedback.html" class="flex items-center text-gray-700 hover:text-blue-500">
+                    <a href="feedback.html" class="flex items-center text-gray-700 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
                         <i class="fas fa-comment mr-3"></i>
                         Feedback
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center text-gray-700 hover:text-blue-500">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
                         <i class="fas fa-cog mr-3"></i>
                         Opciones
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center text-gray-700 hover:text-blue-500">
+                    <a href="#" class="flex items-center text-gray-700 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
                         <i class="fas fa-sign-out-alt mr-3"></i>
                         Cerrar sesión
                     </a>
+                </li>
+                <li>
+                    <button id="theme-toggle" class="flex items-center w-full text-gray-700 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
+                        <i id="theme-icon" class="fas fa-sun mr-3"></i>
+                        <span id="theme-text">Modo día</span>
+                    </button>
                 </li>
             </ul>
         </div>
     </div>
 
     <div class="min-h-screen flex flex-col">
-        <nav class="bg-white shadow-md">
+        <nav class="bg-white dark:bg-gray-800 shadow-md">
             <div class="container mx-auto px-4 py-3 flex justify-between items-center">
                 <!-- Botón para abrir el menú -->
                 <button id="open-sidebar" class="text-gray-600 hover:text-gray-800 focus:outline-none">
@@ -94,20 +106,20 @@
         </nav>
 
         <main class="container mx-auto px-4 pt-24 pb-12">
-            <h1 class="text-3xl font-bold text-center mb-8">Cuenta</h1>
+            <h1 class="text-3xl font-bold text-center mb-8 dark:text-white">Cuenta</h1>
             
-            <div class="bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
                 <div class="flex items-center mb-6">
-                    <img src="src/default-avatar.png" alt="Foto de perfil" class="w-24 h-24 rounded-full mr-6">
+                    <img src="src/default-avatar.png" alt="" class="w-24 h-24 rounded-full mr-6">
                     <div>
-                        <h2 class="text-2xl font-semibold">IVAN?</h2>
-                        <p class="text-gray-600">fishapp@example.com</p>
+                        <h2 class="text-2xl font-semibold dark:text-white">IVAN?</h2>
+                        <p class="text-gray-600 dark:text-gray-400">fishapp@example.com</p>
                     </div>
                 </div>
                 
                 <div class="space-y-4">
                     <div>
-                        <h3 class="text-lg font-semibold mb-2">Cambiar foto de perfil</h3>
+                        <h3 class="text-lg font-semibold mb-2 dark:text-white">Cambiar foto de perfil</h3>
                         <input type="file" class="block w-full text-sm text-gray-500
                             file:mr-4 file:py-2 file:px-4
                             file:rounded-full file:border-0
@@ -118,36 +130,36 @@
                     </div>
                     
                     <div>
-                        <h3 class="text-lg font-semibold mb-2">Cambiar contraseña</h3>
-                        <input type="password" placeholder="Contraseña actual" class="w-full px-3 py-2 border rounded-md mb-2">
-                        <input type="password" placeholder="Nueva contraseña" class="w-full px-3 py-2 border rounded-md mb-2">
-                        <input type="password" placeholder="Confirmar nueva contraseña" class="w-full px-3 py-2 border rounded-md mb-2">
+                        <h3 class="text-lg font-semibold mb-2 dark:text-white">Cambiar contraseña</h3>
+                        <input type="password" placeholder="Contraseña actual" class="w-full px-3 py-2 border rounded-md mb-2 dark:bg-gray-700 dark:text-white">
+                        <input type="password" placeholder="Nueva contraseña" class="w-full px-3 py-2 border rounded-md mb-2 dark:bg-gray-700 dark:text-white">
+                        <input type="password" placeholder="Confirmar nueva contraseña" class="w-full px-3 py-2 border rounded-md mb-2 dark:bg-gray-700 dark:text-white">
                         <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-300">Cambiar contraseña</button>
                     </div>
                     
                     <div>
-                        <h3 class="text-lg font-semibold mb-2">Preferencias de notificaciones</h3>
+                        <h3 class="text-lg font-semibold mb-2 dark:text-white">Preferencias de notificaciones</h3>
                         <label class="flex items-center space-x-2">
                             <input type="checkbox" class="form-checkbox">
-                            <span>Recibir notificaciones por email</span>
+                            <span class="dark:text-white">Recibir notificaciones por email</span>
                         </label>
                         <label class="flex items-center space-x-2">
                             <input type="checkbox" class="form-checkbox">
-                            <span>Recibir notificaciones push</span>
+                            <span class="dark:text-white">Recibir notificaciones push</span>
                         </label>
                     </div>
                     
                     <div>
-                        <h3 class="text-lg font-semibold mb-2">Idioma preferido</h3>
-                        <select id="language-select" class="w-full px-3 py-2 border rounded-md">
+                        <h3 class="text-lg font-semibold mb-2 dark:text-white">Idioma preferido</h3>
+                        <select id="language-select" class="w-full px-3 py-2 border rounded-md dark:bg-gray-700 dark:text-white">
                             <option value="es">Español</option>
                             <option value="en">English</option>
                         </select>
                     </div>
                     
                     <div>
-                        <h3 class="text-lg font-semibold mb-2">Eliminar cuenta</h3>
-                        <p class="text-gray-600 mb-2">Esta acción es irreversible y eliminará todos tus datos.</p>
+                        <h3 class="text-lg font-semibold mb-2 dark:text-white">Eliminar cuenta</h3>
+                        <p class="text-gray-600 mb-2 dark:text-gray-400">Esta acción es irreversible y eliminará todos tus datos.</p>
                         <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-300">Eliminar mi cuenta</button>
                     </div>
                 </div>
@@ -186,6 +198,32 @@
             // Por ahora, solo recargamos la página para simular el cambio de idioma
             window.location.reload();
         });
+
+        // Funcionalidad para cambiar el tema
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        const html = document.documentElement;
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeText.textContent = 'Modo noche';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeText.textContent = 'Modo día';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Verificar el tema guardado en localStorage al cargar la página
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+            themeText.textContent = 'Modo noche';
+        }
     </script>
 </body>
 </html>

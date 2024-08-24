@@ -19,10 +19,16 @@
             100% { transform: translateY(0) scaleY(1); }
         }
     </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            // ... otras configuraciones
+        }
+    </script>
 </head>
-<body class="bg-blue-50">
+<body class="bg-blue-50 dark:bg-gray-900">
     <!-- Menú desplegable -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-hidden">
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-hidden">
         <div class="absolute inset-x-0 bottom-0 h-16 bg-blue-200 animate-[wave_3s_ease-in-out_infinite]"></div>
         <div class="absolute inset-x-0 bottom-0 h-12 bg-blue-300 animate-[wave_2.5s_ease-in-out_infinite_0.1s]"></div>
         <div class="absolute inset-x-0 bottom-0 h-8 bg-blue-400 animate-[wave_2s_ease-in-out_infinite_0.2s]"></div>
@@ -70,12 +76,18 @@
                         Cerrar sesión
                     </a>
                 </li>
+                <li>
+                    <button id="theme-toggle" class="flex items-center w-full text-gray-700 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
+                        <i id="theme-icon" class="fas fa-sun mr-3"></i>
+                        <span id="theme-text">Modo día</span>
+                    </button>
+                </li>
             </ul>
         </div>
     </div>
 
     <div class="min-h-screen flex flex-col">
-        <nav class="bg-white shadow-md">
+        <nav class="bg-white dark:bg-gray-800 shadow-md">
             <div class="container mx-auto px-4 py-3 flex justify-between items-center">
                 <!-- Botón para abrir el menú -->
                 <button id="open-sidebar" class="text-gray-600 hover:text-gray-800 focus:outline-none">
@@ -111,7 +123,7 @@
         </nav>
 
         <main class="container mx-auto px-4 pt-24 pb-12">
-            <h1 class="text-3xl font-bold text-center mb-4">Catálogo</h1>
+            <h1 class="text-3xl font-bold text-center mb-4 dark:text-white">Catálogo</h1>
             <div class="flex justify-center mb-8">
                 <a href="capture.html" class="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300 focus:outline-none">
                     <i class="fas fa-eye mr-2"></i>
@@ -124,10 +136,10 @@
         </main>
 
         <!-- Modal para detalles del pez -->
-        <div id="fish-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-            <div class="bg-white p-8 rounded-xl max-w-lg w-full">
-                <h2 id="modal-title" class="text-2xl font-bold mb-4"></h2>
-                <p id="modal-details" class="mb-4"></p>
+        <div id="fish-modal" class="fixed inset-0 bg-black bg-opacity-50 dark:bg-opacity-70 hidden items-center justify-center z-50">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl max-w-lg w-full">
+                <h2 id="modal-title" class="text-2xl font-bold mb-4 dark:text-white"></h2>
+                <p id="modal-details" class="mb-4 dark:text-gray-300"></p>
                 <button id="close-modal" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Cerrar</button>
             </div>
         </div>
@@ -162,15 +174,15 @@
 
         function createFishCard(fish) {
             const card = document.createElement('div');
-            card.className = 'bg-white rounded-xl shadow-lg p-4 hover:shadow-xl transition duration-300 transform hover:-translate-y-1 cursor-pointer';
+            card.className = 'bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 hover:shadow-xl transition duration-300 transform hover:-translate-y-1 cursor-pointer';
             card.innerHTML = `
                 <div class="relative w-full h-32 bg-blue-100 rounded-lg overflow-hidden">
                     <i class="fas ${fish.icon} text-5xl text-blue-500 absolute inset-0 flex items-center justify-center animate-[float_3s_ease-in-out_infinite]"></i>
                 </div>
-                <h3 class="mt-3 text-center font-semibold text-gray-700">${fish.name}</h3>
-                <p class="text-center text-sm text-gray-500">Familia: ${fish.family}</p>
-                <p class="text-center text-sm text-gray-500">Precio: ${fish.price} $</p>
-                <p class="text-center text-sm text-gray-500">Rareza: ${fish.rarity}</p>
+                <h3 class="mt-3 text-center font-semibold text-gray-700 dark:text-white">${fish.name}</h3>
+                <p class="text-center text-sm text-gray-500 dark:text-gray-300">Familia: ${fish.family}</p>
+                <p class="text-center text-sm text-gray-500 dark:text-gray-300">Precio: ${fish.price} $</p>
+                <p class="text-center text-sm text-gray-500 dark:text-gray-300">Rareza: ${fish.rarity}</p>
                 <button class="mt-2 w-full px-3 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300 focus:outline-none capture-button">
                     <i class="fas fa-fishing-rod mr-2"></i>Capturar
                 </button>
@@ -306,6 +318,38 @@
 
         document.getElementById('capture-manually').addEventListener('click', () => {
             showCaptureModal();
+        });
+
+        // Funcionalidad para cambiar el tema
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+
+        function setTheme(isDark) {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeText.textContent = 'Modo noche';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeText.textContent = 'Modo día';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = !document.documentElement.classList.contains('dark');
+            setTheme(isDark);
+        });
+
+        // Verificar el tema guardado en localStorage al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme === 'dark' || (!savedTheme && prefersDark);
+            setTheme(isDark);
         });
     </script>
 </body>

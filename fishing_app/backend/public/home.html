@@ -7,6 +7,12 @@
     <title>Home - Fishing App</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            // ... otras configuraciones
+        }
+    </script>
     <style>
         @keyframes float {
             0% { transform: translateY(0px); }
@@ -73,9 +79,9 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 dark:bg-gray-900">
     <!-- Menú desplegable -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-hidden">
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-hidden">
         <div class="absolute inset-x-0 bottom-0 h-16 bg-blue-200 animate-[wave_3s_ease-in-out_infinite]"></div>
         <div class="absolute inset-x-0 bottom-0 h-12 bg-blue-300 animate-[wave_2.5s_ease-in-out_infinite_0.1s]"></div>
         <div class="absolute inset-x-0 bottom-0 h-8 bg-blue-400 animate-[wave_2s_ease-in-out_infinite_0.2s]"></div>
@@ -123,12 +129,18 @@
                         Cerrar sesión
                     </a>
                 </li>
+                <li>
+                    <button id="theme-toggle" class="flex items-center w-full text-gray-700 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
+                        <i id="theme-icon" class="fas fa-sun mr-3"></i>
+                        <span id="theme-text">Modo día</span>
+                    </button>
+                </li>
             </ul>
         </div>
     </div>
 
     <div class="min-h-screen flex flex-col">
-        <nav class="bg-white shadow-md">
+        <nav class="bg-white dark:bg-gray-800 shadow-md">
             <div class="container mx-auto px-4 py-3 flex justify-between items-center">
                 <!-- Botón para abrir el menú -->
                 <button id="open-sidebar" class="text-gray-600 hover:text-gray-800 focus:outline-none">
@@ -157,6 +169,11 @@
         </main>
     </div>
 
+    <!-- Agregar el botón de cambio de tema -->
+    <button id="theme-toggle" class="fixed bottom-4 right-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white">
+        <i id="theme-icon" class="fas fa-sun"></i>
+    </button>
+
     <script>
         const feedData = [
             { id: 1, user: 'bethayo', image: 'https://images.unsplash.com/photo-1545816250-e12bedba42ba?w=600&h=400&fit=crop', caption: '¡Increíble trucha arcoíris capturada hoy!', likes: 120, comments: 15 },
@@ -174,24 +191,24 @@
 
         function createPostCard(post) {
             const card = document.createElement('div');
-            card.className = 'post-card bg-white';
+            card.className = 'post-card bg-white dark:bg-gray-800';
             card.innerHTML = `
                 <div class="post-header flex items-center">
                     <img src="https://picsum.photos/seed/${post.user}/30/30" alt="${post.user}" class="avatar mr-2">
-                    <span class="username">${post.user}</span>
+                    <span class="username dark:text-white">${post.user}</span>
                 </div>
                 <div class="post-content">
                     <img src="${post.image}" alt="Post image">
                 </div>
                 <div class="post-footer">
                     <div class="post-actions flex items-center mb-2">
-                        <button><i class="far fa-heart"></i></button>
-                        <button><i class="fas fa-retweet"></i></button>
-                        <button><i class="far fa-comment"></i></button>
-                        <button class="ml-auto"><i class="far fa-paper-plane"></i></button>
+                        <button class="dark:text-gray-300"><i class="far fa-heart"></i></button>
+                        <button class="dark:text-gray-300"><i class="fas fa-retweet"></i></button>
+                        <button class="dark:text-gray-300"><i class="far fa-comment"></i></button>
+                        <button class="ml-auto dark:text-gray-300"><i class="far fa-paper-plane"></i></button>
                     </div>
-                    <p class="text-xs mb-1"><span class="font-bold">${post.likes} notas</span></p>
-                    <p class="caption"><span class="font-bold">${post.user}</span> ${post.caption}</p>
+                    <p class="text-xs mb-1 dark:text-gray-300"><span class="font-bold">${post.likes} notas</span></p>
+                    <p class="caption dark:text-gray-300"><span class="font-bold">${post.user}</span> ${post.caption}</p>
                 </div>
             `;
             return card;
@@ -233,6 +250,32 @@
             alert('Funcionalidad para crear nueva publicación');
             // Aquí puedes implementar la lógica para crear una nueva publicación
         });
+
+        // Funcionalidad para cambiar el tema
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+        const html = document.documentElement;
+
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeText.textContent = 'Modo noche';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeText.textContent = 'Modo día';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Verificar el tema guardado en localStorage al cargar la página
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+            themeText.textContent = 'Modo noche';
+        }
     </script>
 </body>
 </html>
