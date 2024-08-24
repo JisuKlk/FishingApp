@@ -4,7 +4,7 @@
     <link rel="icon" type="image/png" href="src/favicon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - Fishing App</title>
+    <title>Guardados - Fishing App</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script>
@@ -36,7 +36,8 @@
         }
         .post-content img {
             width: 100%;
-            height: auto;
+            height: 300px; /* Altura fija para todas las imágenes */
+            object-fit: cover; /* Mantiene la relación de aspecto y cubre el contenedor */
             display: block;
         }
         .post-footer {
@@ -48,10 +49,22 @@
             margin-right: 15px;
             color: #8f8f8f;
         }
+        .post-actions button.liked {
+            color: #8B5CF6; /* Color morado para los likes */
+        }
+        .post-actions button.saved {
+            color: #3B82F6; /* Color azul para los guardados */
+        }
         .avatar {
-            width: 30px;
-            height: 30px;
-            border-radius: 2px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+        @media (min-width: 640px) {
+            .avatar {
+                width: 30px;
+                height: 30px;
+            }
         }
         .username {
             font-weight: 600;
@@ -62,10 +75,18 @@
             line-height: 1.4;
             margin-top: 8px;
         }
-        /* Nuevos estilos para el diseño de columnas */
+        /* Nuevos estilos para el diseño tipo Pinterest */
         #feed {
             column-count: 3;
             column-gap: 20px;
+        }
+        .post-card {
+            break-inside: avoid;
+            background-color: white;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
         }
         @media (max-width: 1200px) {
             #feed {
@@ -130,6 +151,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="saved.html" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-bookmark mr-3"></i>
+                        Guardados
+                    </a>
+                </li>
+                <li>
                     <button id="theme-toggle" class="flex items-center w-full text-gray-700 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
                         <i id="theme-icon" class="fas fa-sun mr-3"></i>
                         <span id="theme-text">Modo día</span>
@@ -156,15 +183,8 @@
         </nav>
 
         <main class="container mx-auto px-4 pt-20 pb-12">
-            <!-- Sección de historias destacadas -->
-            <div class="max-w-2xl mx-auto mb-8 overflow-x-auto">
-                <div class="flex space-x-4 pb-2">
-                    <!-- Las historias destacadas se cargarán aquí dinámicamente -->
-                </div>
-            </div>
-
             <div id="feed" class="max-w-6xl mx-auto">
-                <!-- Las publicaciones se cargarán aquí dinámicamente -->
+                <!-- Las publicaciones guardadas se cargarán aquí dinámicamente -->
             </div>
         </main>
     </div>
@@ -191,27 +211,52 @@
 
         function createPostCard(post) {
             const card = document.createElement('div');
-            card.className = 'post-card bg-white dark:bg-gray-800';
+            card.className = 'post-card';
             card.innerHTML = `
-                <div class="post-header flex items-center">
-                    <img src="https://picsum.photos/seed/${post.user}/30/30" alt="${post.user}" class="avatar mr-2">
-                    <span class="username dark:text-white">${post.user}</span>
-                </div>
                 <div class="post-content">
                     <img src="${post.image}" alt="Post image">
                 </div>
-                <div class="post-footer">
-                    <div class="post-actions flex items-center mb-2">
-                        <button class="dark:text-gray-300"><i class="far fa-heart"></i></button>
-                        <button class="dark:text-gray-300"><i class="fas fa-retweet"></i></button>
-                        <button class="dark:text-gray-300"><i class="far fa-comment"></i></button>
-                        <button class="ml-auto dark:text-gray-300"><i class="far fa-paper-plane"></i></button>
+                <div class="p-4">
+                    <p class="caption dark:text-gray-800"><span class="font-bold">${post.user}</span> ${post.caption}</p>
+                    <div class="flex items-center justify-between mt-4">
+                        <div class="flex items-center">
+                            <img src="https://picsum.photos/seed/${post.user}/30/30" alt="${post.user}" class="avatar mr-2">
+                            <span class="text-sm font-medium">${post.user}</span>
+                        </div>
+                        <div class="post-actions">
+                            <button class="like-button" data-post-id="${post.id}"><i class="fas fa-heart"></i> <span class="like-count">${post.likes}</span></button>
+                            <button class="save-button" data-post-id="${post.id}"><i class="fas fa-bookmark"></i></button>
+                        </div>
                     </div>
-                    <p class="text-xs mb-1 dark:text-gray-300"><span class="font-bold">${post.likes} notas</span></p>
-                    <p class="caption dark:text-gray-300"><span class="font-bold">${post.user}</span> ${post.caption}</p>
                 </div>
             `;
+
+            const likeButton = card.querySelector('.like-button');
+            const saveButton = card.querySelector('.save-button');
+
+            likeButton.addEventListener('click', () => toggleLike(post.id, likeButton));
+            saveButton.addEventListener('click', () => toggleSave(post.id, saveButton));
+
             return card;
+        }
+
+        function toggleLike(postId, button) {
+            button.classList.toggle('liked');
+            const likeCount = button.querySelector('.like-count');
+            const currentLikes = parseInt(likeCount.textContent);
+            likeCount.textContent = button.classList.contains('liked') ? currentLikes + 1 : currentLikes - 1;
+        }
+
+        function toggleSave(postId, button) {
+            button.classList.toggle('saved');
+            const savedPosts = JSON.parse(localStorage.getItem('savedPosts')) || [];
+            if (button.classList.contains('saved')) {
+                savedPosts.push(postId);
+            } else {
+                const index = savedPosts.indexOf(postId);
+                if (index > -1) savedPosts.splice(index, 1);
+            }
+            localStorage.setItem('savedPosts', JSON.stringify(savedPosts));
         }
 
         function loadPosts() {
