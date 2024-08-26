@@ -115,7 +115,7 @@
             </div>
             <ul class="space-y-4">
                 <li>
-                    <a href="index.html" class="flex items-center text-purple-600 font-semibold">
+                    <a href="home.html" class="flex items-center text-purple-600 font-semibold">
                         <i class="fas fa-home mr-3"></i>
                         Inicio
                     </a>
@@ -251,7 +251,9 @@
             button.classList.toggle('saved');
             const savedPosts = JSON.parse(localStorage.getItem('savedPosts')) || [];
             if (button.classList.contains('saved')) {
-                savedPosts.push(postId);
+                if (!savedPosts.includes(postId)) {
+                    savedPosts.push(postId);
+                }
             } else {
                 const index = savedPosts.indexOf(postId);
                 if (index > -1) savedPosts.splice(index, 1);
@@ -260,8 +262,14 @@
         }
 
         function loadPosts() {
+            const savedPosts = JSON.parse(localStorage.getItem('savedPosts')) || [];
             feedData.forEach(post => {
-                feed.appendChild(createPostCard(post));
+                const card = createPostCard(post);
+                const saveButton = card.querySelector('.save-button');
+                if (savedPosts.includes(post.id)) {
+                    saveButton.classList.add('saved');
+                }
+                feed.appendChild(card);
             });
         }
 

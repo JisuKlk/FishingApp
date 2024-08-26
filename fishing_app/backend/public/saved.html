@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" type="image/png" href="src/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved - Fishing App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            // ... otras configuraciones
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes wave {
+            0% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-5px) scaleY(1.05); }
+            100% { transform: translateY(0) scaleY(1); }
+        }
+        /* ... otros estilos ... */
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900">
+    <!-- Menú desplegable -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-hidden">
+        <div class="absolute inset-x-0 bottom-0 h-16 bg-blue-200 animate-[wave_3s_ease-in-out_infinite]"></div>
+        <div class="absolute inset-x-0 bottom-0 h-12 bg-blue-300 animate-[wave_2.5s_ease-in-out_infinite_0.1s]"></div>
+        <div class="absolute inset-x-0 bottom-0 h-8 bg-blue-400 animate-[wave_2s_ease-in-out_infinite_0.2s]"></div>
+        <div class="p-5 relative z-10">
+            <button id="close-sidebar" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="flex justify-center mb-6">
+                <img src="src/logo_fishingapp.png" alt="Fishing App Logo" class="h-20 w-30">
+            </div>
+            <ul class="space-y-4">
+                <li>
+                    <a href="home.html" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-home mr-3"></i>
+                        Inicio
+                    </a>
+                </li>
+                <li>
+                    <a href="catalog.html" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-fish mr-3"></i>
+                        Catálogo
+                    </a>
+                </li>
+                <li>
+                    <a href="account.html" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-user mr-3"></i>
+                        Cuenta
+                    </a>
+                </li>
+                <li>
+                    <a href="feedback.html" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-comment mr-3"></i>
+                        Feedback
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-cog mr-3"></i>
+                        Opciones
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center text-gray-700 hover:text-blue-500">
+                        <i class="fas fa-sign-out-alt mr-3"></i>
+                        Cerrar sesión
+                    </a>
+                </li>
+                <li>
+                    <a href="saved.html" class="flex items-center text-purple-600 font-semibold">
+                        <i class="fas fa-bookmark mr-3"></i>
+                        Guardados
+                    </a>
+                </li>
+                <li>
+                    <button id="theme-toggle" class="flex items-center w-full text-gray-700 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400">
+                        <i id="theme-icon" class="fas fa-sun mr-3"></i>
+                        <span id="theme-text">Modo día</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="min-h-screen flex flex-col">
+        <nav class="bg-white dark:bg-gray-800 shadow-md">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <!-- Botón para abrir el menú -->
+                <button id="open-sidebar" class="text-gray-600 hover:text-gray-800 focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+                <div class="absolute left-1/2 transform -translate-x-1/2">
+                    <img src="src/fishingapp.png" alt="Fishing App Logo" class="h-20 w-20">
+                </div>
+            </div>
+        </nav>
+
+        <main class="container mx-auto px-4 pt-20 pb-12">
+            <h1 class="text-3xl font-bold mb-6 dark:text-white">Posts Guardados</h1>
+            <div id="savedPosts" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Los posts guardados se cargarán aquí dinámicamente -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Agregar el botón de cambio de tema -->
+    <button id="theme-toggle-main" class="fixed bottom-4 right-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white">
+        <i id="theme-icon-main" class="fas fa-sun"></i>
+    </button>
+
+    <script>
+        // Funcionalidad del menú desplegable
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarButton = document.getElementById('open-sidebar');
+        const closeSidebarButton = document.getElementById('close-sidebar');
+
+        openSidebarButton.addEventListener('click', () => {
+            sidebar.classList.remove('-translate-x-full');
+        });
+
+        closeSidebarButton.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+        });
+
+        // Cerrar el menú al hacer clic fuera de él
+        document.addEventListener('click', (event) => {
+            if (!sidebar.contains(event.target) && !openSidebarButton.contains(event.target)) {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+
+        // Funcionalidad para cambiar el tema
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeToggleMain = document.getElementById('theme-toggle-main');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeIconMain = document.getElementById('theme-icon-main');
+        const themeText = document.getElementById('theme-text');
+        const html = document.documentElement;
+
+        function toggleTheme() {
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                themeIconMain.classList.replace('fa-sun', 'fa-moon');
+                themeText.textContent = 'Modo noche';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                themeIconMain.classList.replace('fa-moon', 'fa-sun');
+                themeText.textContent = 'Modo día';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+        themeToggleMain.addEventListener('click', toggleTheme);
+
+        // Verificar el tema guardado en localStorage al cargar la página
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+            themeIconMain.classList.replace('fa-sun', 'fa-moon');
+            themeText.textContent = 'Modo noche';
+        }
+
+        // Cargar posts guardados
+        function createPostCard(post) {
+            const card = document.createElement('div');
+            card.className = 'post-card';
+            card.innerHTML = `
+                <div class="post-content">
+                    <img src="${post.image}" alt="Post image">
+                </div>
+                <div class="p-4">
+                    <p class="caption dark:text-gray-800"><span class="font-bold">${post.user}</span> ${post.caption}</p>
+                    <div class="flex items-center justify-between mt-4">
+                        <div class="flex items-center">
+                            <img src="https://picsum.photos/seed/${post.user}/30/30" alt="${post.user}" class="avatar mr-2">
+                            <span class="text-sm font-medium">${post.user}</span>
+                        </div>
+                        <div class="post-actions">
+                            <button class="like-button" data-post-id="${post.id}"><i class="fas fa-heart"></i> <span class="like-count">${post.likes}</span></button>
+                            <button class="save-button saved" data-post-id="${post.id}"><i class="fas fa-bookmark"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const saveButton = card.querySelector('.save-button');
+            saveButton.addEventListener('click', () => removeSavedPost(post.id));
+
+            return card;
+        }
+
+        function removeSavedPost(postId) {
+            let savedPosts = JSON.parse(localStorage.getItem('savedPosts')) || [];
+            savedPosts = savedPosts.filter(id => id !== postId);
+            localStorage.setItem('savedPosts', JSON.stringify(savedPosts));
+            loadSavedPosts(); // Recargar los posts guardados
+        }
+
+        function loadSavedPosts() {
+            const savedPostsContainer = document.getElementById('savedPosts');
+            savedPostsContainer.innerHTML = ''; // Limpiar el contenedor
+            const savedPosts = JSON.parse(localStorage.getItem('savedPosts')) || [];
+            const savedFeedData = feedData.filter(post => savedPosts.includes(post.id));
+            
+            if (savedFeedData.length === 0) {
+                savedPostsContainer.innerHTML = '<p class="text-center text-gray-500 dark:text-gray-400">No tienes posts guardados.</p>';
+            } else {
+                savedFeedData.forEach(post => {
+                    const card = createPostCard(post);
+                    savedPostsContainer.appendChild(card);
+                });
+            }
+        }
+
+        const feedData = [
+            { id: 1, user: 'bethayo', image: 'https://images.unsplash.com/photo-1545816250-e12bedba42ba?w=600&h=400&fit=crop', caption: '¡Increíble trucha arcoíris capturada hoy!', likes: 120, comments: 15 },
+            { id: 2, user: 'squizojellfish', image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop', caption: 'Un día perfecto para la pesca en alta mar', likes: 89, comments: 7 },
+            { id: 4, user: 'idsib', image: 'https://images.unsplash.com/photo-1574781330855-d0db8cc6a79c?w=600&h=400&fit=crop', caption: 'Capturé este hermoso salmón en Alaska', likes: 203, comments: 28 },
+            { id: 6, user: 'jisuklk', image: 'https://images.unsplash.com/photo-1531959870249-9f9b729efcf4?w=600&h=400&fit=crop', caption: '¡Nueva marca personal! Carpa de 15 kg', likes: 167, comments: 22 },
+            { id: 7, user: 'wasap2', image: 'https://images.unsplash.com/photo-1544552866-d3ed42536cfd?w=600&h=400&fit=crop', caption: 'Explorando los arrecifes en busca del pez perfecto', likes: 98, comments: 11 },
+            { id: 8, user: 'nicolasmaduro', image: 'https://images.unsplash.com/photo-1595503240812-7286dafaddc1?w=600&h=400&fit=crop', caption: 'Este lucio dio una gran pelea. ¡Qué adrenalina!', likes: 112, comments: 13 },
+            { id: 9, user: 'tiburao', image: 'https://images.unsplash.com/photo-1500463959177-e0869687df26?w=600&h=400&fit=crop', caption: 'Captura y suelta: preservando nuestros ríos para futuras generaciones', likes: 145, comments: 19 },
+            { id: 10, user: 'truchas33', image: 'https://images.unsplash.com/photo-1549893072-4bc678117f45?w=600&h=400&fit=crop', caption: 'Nada como la tranquilidad de un arroyo de montaña', likes: 88, comments: 6 },
+            { id: 11, user: 'pezglobo', image: 'https://images.unsplash.com/photo-1524704654690-b56c05c78a00?w=600&h=400&fit=crop', caption: 'Encontré este curioso pez globo durante mi buceo', likes: 201, comments: 31 },
+        ];
+
+        document.addEventListener('DOMContentLoaded', loadSavedPosts);
+    </script>
+</body>
+</html>
