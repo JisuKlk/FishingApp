@@ -7,8 +7,8 @@ import requests
 # We get the data from an completely usefull and not-so-short api (like 30 species lmao), still in proccess to improve this to get lotta species 🎣🐟
 def fetch_all_species_from_fishbase():
 
-    # This' the api url yay
-    base_url = "https://fishbase.ropensci.org/"
+    # This' the api url yay (we're addin' an endpoint, maybe it's not workin' cuz this)
+    base_url = "https://fishbase.ropensci.org/species"
 
     # Quick counter for the species in total + pagination
     page = 1
@@ -25,12 +25,17 @@ def fetch_all_species_from_fishbase():
         # We gotta send a GET request to the api, this api only accept GET request (as expected tho), now, we add pagination since we want more fish 🦆👍
         response = requests.get(base_url, params={'limit': 10, 'page': page}, headers=headers)
 
-        # Accordin to the api readme, 200 means everythings ok, so if it works, we put the data into a json
+        # Accordin' to the api readme, 200 means everythings ok, so if it works, we put the data into a json
         if response.status_code == 200:
-            species_data = response.json()['data']
+            try:
+                species_data = response.json().get('data', [])
+            except (ValueError, KeyError) as e:
+                print(f"Error parsing JSON response: {e}")
+                break
 
             # If no species data is returned, break the loop
             if not species_data:
+                print("No more species found!")
                 break
 
             # We iterate through the species data
@@ -42,7 +47,7 @@ def fetch_all_species_from_fishbase():
                 common_name = specie.get('FBname', 'Unknown')
 
                 # Fuck duplicates, all my homies hate duplicates 🦆
-                if not Species.objects.filter(id_worms=id_fishbase).exists():
+                if not Species.objects.filter(id_fishbase=id_fishbase).exists():
                     Species.objects.create(
                         id_fishbase=id_fishbase,
                         scientific_name=scientific_name,
@@ -61,6 +66,8 @@ def fetch_all_species_from_fishbase():
         else:
             # If the code it's not 200, we print the error
             print(f"ERROR: {response.status_code}")
+            print("Response:", response.text)
+
             break
 
     # Fish added in total
